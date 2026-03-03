@@ -1,0 +1,10 @@
+{
+  "name": "rajput-thakur-gallery",
+  "version": "1.0.0",
+  "description": "Rajput Thakur Gallery with Neon DB",
+  "dependencies": {
+    "pg": "^8.11.3",
+    "busboy": "^1.6.0",
+    "uuid": "^9.0.1"
+  }
+}

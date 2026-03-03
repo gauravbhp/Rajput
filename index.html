@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- YEH LINE IMPORTANT HAI - MOBILE KE LIYE -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
     <title>Rajput Thakur - Heritage Gallery</title>
 
     <!-- Tailwind CSS -->
@@ -22,14 +23,62 @@
 
     <style>
       /* Rajput Theme Styling */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
       body {
         font-family: "Poppins", sans-serif;
         background: linear-gradient(135deg, #fdf4e3 0%, #f5e6d3 100%);
+        overflow-x: hidden;
+        width: 100%;
       }
 
       .rajput-title {
         font-family: "Playfair Display", serif;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Mobile Responsive Fixes */
+      @media (max-width: 640px) {
+        h1 {
+          font-size: 1.8rem !important;
+          line-height: 1.3 !important;
+        }
+        
+        .rajput-title {
+          font-size: 1.5rem !important;
+        }
+        
+        .text-5xl {
+          font-size: 2rem !important;
+        }
+        
+        .p-8 {
+          padding: 1.5rem !important;
+        }
+        
+        .sword-divider {
+          gap: 10px;
+        }
+        
+        .sword-divider span {
+          font-size: 1rem !important;
+        }
+        
+        .category-filters {
+          overflow-x: auto;
+          white-space: nowrap;
+          padding-bottom: 10px;
+          -webkit-overflow-scrolling: touch;
+        }
+        
+        .category-filters button {
+          display: inline-block;
+          white-space: nowrap;
+        }
       }
 
       /* Royal Border Pattern */
@@ -67,12 +116,13 @@
         align-items: center;
         justify-content: center;
         gap: 20px;
+        flex-wrap: wrap;
       }
 
       .sword-divider::before,
       .sword-divider::after {
         content: "⚔️";
-        font-size: 24px;
+        font-size: 20px;
         opacity: 0.5;
       }
 
@@ -82,7 +132,7 @@
         background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 L55 30 L30 55 L5 30 Z' fill='none' stroke='%23ff9933' stroke-width='0.5' opacity='0.2'/%3E%3C/svg%3E");
       }
 
-      /* Image hover effect with Rajput shield */
+      /* Image hover effect */
       .rajput-shield-hover {
         position: relative;
         overflow: hidden;
@@ -94,7 +144,7 @@
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%) scale(0);
-        font-size: 50px;
+        font-size: 40px;
         opacity: 0;
         transition: all 0.3s ease;
         z-index: 10;
@@ -110,25 +160,17 @@
         box-shadow: 0 10px 30px -5px rgba(184, 134, 11, 0.3);
       }
 
-      /* Loading skeleton with rajput colors */
+      /* Loading skeleton */
       @keyframes shimmer {
-        0% {
-          background-position: -1000px 0;
-        }
-        100% {
-          background-position: 1000px 0;
-        }
+        0% { background-position: -1000px 0; }
+        100% { background-position: 1000px 0; }
       }
 
       .skeleton {
-        background: linear-gradient(
-          90deg,
-          #f0e6d2 25%,
-          #e6d5b8 50%,
-          #f0e6d2 75%
-        );
+        background: linear-gradient(90deg, #f0e6d2 25%, #e6d5b8 50%, #f0e6d2 75%);
         background-size: 1000px 100%;
         animation: shimmer 2s infinite;
+        min-height: 200px;
       }
 
       /* Rajput badge */
@@ -142,9 +184,10 @@
         display: inline-block;
       }
 
-      /* Custom scrollbar with rajput colors */
+      /* Custom scrollbar */
       ::-webkit-scrollbar {
-        width: 10px;
+        width: 8px;
+        height: 8px;
       }
 
       ::-webkit-scrollbar-track {
@@ -156,443 +199,352 @@
         border-radius: 5px;
       }
 
-      ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(to bottom, #ff7700, #996515);
+      /* Horizontal scroll for categories on mobile */
+      .scrollable-categories {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+        white-space: nowrap;
+        padding: 5px 0;
+      }
+
+      .scrollable-categories button {
+        display: inline-block;
+        margin-right: 8px;
+      }
+
+      /* Mobile menu */
+      .mobile-menu {
+        transition: all 0.3s ease;
+      }
+
+      /* Image grid for mobile */
+      @media (max-width: 640px) {
+        .grid {
+          gap: 1rem !important;
+        }
+        
+        .gallery-item img {
+          height: 200px !important;
+        }
       }
     </style>
   </head>
-  <body class="pattern-bg min-h-screen">
-    <!-- ========== RAJPUT ROYAL NAVIGATION ========== -->
-    <nav
-      class="bg-gradient-to-r from-amber-900 via-orange-800 to-amber-900 shadow-2xl sticky top-0 z-40 border-b-2 border-yellow-600"
-    >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-20">
-          <!-- Logo and Brand - Rajput Style -->
-          <div class="flex items-center space-x-8">
-            <a href="index.html" class="flex items-center space-x-3 group">
-              <span
-                class="text-4xl transform group-hover:scale-110 transition duration-300"
-                >⚔️</span
-              >
+  <body class="pattern-bg min-h-screen w-full overflow-x-hidden">
+
+    <!-- ========== MOBILE-FRIENDLY NAVIGATION ========== -->
+    <nav class="bg-gradient-to-r from-amber-900 via-orange-800 to-amber-900 shadow-2xl sticky top-0 z-50 border-b-2 border-yellow-600">
+      <div class="w-full px-3 sm:px-6 lg:px-8">
+        <div class="flex flex-wrap items-center justify-between py-2 sm:py-0 sm:h-20">
+          
+          <!-- Logo - Mobile Friendly -->
+          <div class="flex items-center">
+            <a href="index.html" class="flex items-center space-x-2 group">
+              <span class="text-3xl sm:text-4xl">⚔️</span>
               <div>
-                <span
-                  class="text-2xl font-bold text-white rajput-title tracking-wider"
-                >
-                  राजपूत ठाकुर
+                <span class="text-lg sm:text-2xl font-bold text-white rajput-title">
+                  राजपूत
                 </span>
-                <span class="block text-xs text-yellow-300"
-                  >Rajput Thakur Heritage</span
-                >
+                <span class="block text-[10px] sm:text-xs text-yellow-300">ठाकुर</span>
               </div>
             </a>
-
-            <!-- Navigation Links -->
-            <div class="hidden md:flex space-x-2">
-              <a
-                href="index.html"
-                class="px-4 py-2 text-white font-semibold border-b-2 border-yellow-400 hover:border-yellow-200 transition flex items-center"
-              >
-                <i class="fas fa-home mr-2"></i>गैलरी
-              </a>
-              <a
-                href="upload.html"
-                class="px-4 py-2 text-white/90 hover:text-white transition flex items-center"
-              >
-                <i class="fas fa-cloud-upload-alt mr-2"></i>अपलोड
-              </a>
-              <a
-                href="#"
-                class="px-4 py-2 text-white/90 hover:text-white transition flex items-center"
-              >
-                <i class="fas fa-history mr-2"></i>इतिहास
-              </a>
-              <a
-                href="bagawat-katha.html"
-                class="px-4 py-2 text-white font-semibold border-b-2 border-yellow-400 flex items-center"
-              >
-                <i class="fas fa-pray mr-2"></i>भागवत कथा
-              </a>
-            </div>
           </div>
 
-          <!-- Right Side -->
-          <div class="flex items-center space-x-4">
-            <!-- Search Bar - Rajput Style -->
-            <div class="hidden md:block relative">
-              <input
-                type="text"
-                id="searchInput"
-                placeholder="तस्वीरें खोजें..."
-                class="pl-10 pr-4 py-2 rounded-full border-2 border-yellow-600 bg-amber-900/50 text-white placeholder-yellow-300 focus:border-yellow-400 outline-none w-64"
-              />
-              <i
-                class="fas fa-search absolute left-3 top-3 text-yellow-300"
-              ></i>
-            </div>
+          <!-- Mobile Menu Button -->
+          <button id="mobileMenuBtn" class="md:hidden text-white text-2xl p-2">
+            <i class="fas fa-bars"></i>
+          </button>
 
-            <!-- Upload Button -->
-            <a
-              href="upload.html"
-              class="bg-gradient-to-r from-yellow-600 to-yellow-500 text-amber-900 px-6 py-2 rounded-full hover:shadow-xl transition transform hover:-translate-y-0.5 flex items-center font-bold border-2 border-yellow-300"
-            >
-              <i class="fas fa-plus-circle mr-2"></i>
-              <span class="hidden sm:inline">नई तस्वीर</span>
+          <!-- Desktop Navigation - Hidden on Mobile -->
+          <div class="hidden md:flex items-center space-x-4">
+            <a href="index.html" class="text-white font-semibold border-b-2 border-yellow-400 px-3 py-2">
+              <i class="fas fa-home mr-1"></i>गैलरी
             </a>
+            <a href="upload.html" class="text-white/90 hover:text-white px-3 py-2">
+              <i class="fas fa-cloud-upload-alt mr-1"></i>अपलोड
+            </a>
+            <a href="bagawat-katha.html" class="text-white/90 hover:text-white px-3 py-2">
+              <i class="fas fa-pray mr-1"></i>भागवत कथा
+            </a>
+          </div>
 
-            <!-- Rajput Crown -->
-            <div class="text-3xl ml-2">👑</div>
+          <!-- Right Side - Desktop Only -->
+          <div class="hidden md:flex items-center space-x-3">
+            <div class="relative">
+              <input type="text" id="searchInput" placeholder="खोजें..." 
+                class="pl-8 pr-3 py-1.5 rounded-full text-sm bg-amber-800/50 text-white placeholder-yellow-300 border border-yellow-500">
+              <i class="fas fa-search absolute left-2.5 top-2 text-yellow-300 text-sm"></i>
+            </div>
+            <a href="upload.html" class="bg-yellow-500 text-amber-900 px-4 py-1.5 rounded-full text-sm font-bold">
+              <i class="fas fa-plus-circle mr-1"></i>नई तस्वीर
+            </a>
+          </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden pb-3 space-y-2">
+          <a href="index.html" class="block text-white py-2 border-b border-amber-700">
+            <i class="fas fa-home mr-2"></i>गैलरी
+          </a>
+          <a href="upload.html" class="block text-white py-2 border-b border-amber-700">
+            <i class="fas fa-cloud-upload-alt mr-2"></i>अपलोड
+          </a>
+          <a href="bagawat-katha.html" class="block text-white py-2 border-b border-amber-700">
+            <i class="fas fa-pray mr-2"></i>भागवत कथा
+          </a>
+          <!-- Mobile Search -->
+          <div class="relative mt-2">
+            <input type="text" id="mobileSearchInput" placeholder="तस्वीरें खोजें..." 
+              class="w-full pl-8 pr-3 py-2 rounded-full text-sm bg-amber-800/50 text-white placeholder-yellow-300 border border-yellow-500">
+            <i class="fas fa-search absolute left-2.5 top-3 text-yellow-300 text-sm"></i>
           </div>
         </div>
       </div>
     </nav>
 
     <!-- ========== MAIN CONTENT ========== -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <!-- ===== RAJPUT WELCOME BANNER ===== -->
-      <div
-        class="royal-border bg-gradient-to-r from-amber-800 to-amber-700 rounded-2xl shadow-2xl p-8 mb-8 text-white relative overflow-hidden"
-      >
-        <!-- Background sword pattern -->
-        <div class="absolute inset-0 opacity-10">
-          <div class="text-8xl rotate-12">⚔️⚔️⚔️</div>
-        </div>
+    <main class="w-full max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
 
-        <div class="flex justify-between items-center relative z-10">
-          <div>
-            <h1 class="text-5xl font-bold mb-2 rajput-title">
-              राजपूत ठाकुर गैलरी
+      <!-- ===== RAJPUT WELCOME BANNER - Mobile Optimized ===== -->
+      <div class="royal-border bg-gradient-to-r from-amber-800 to-amber-700 rounded-xl sm:rounded-2xl p-4 sm:p-8 mb-4 sm:mb-8 text-white relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 text-6xl sm:text-8xl rotate-12">⚔️⚔️⚔️</div>
+
+        <div class="flex flex-col sm:flex-row justify-between items-center relative z-10 gap-3 sm:gap-0">
+          <div class="text-center sm:text-left">
+            <h1 class="text-2xl sm:text-4xl lg:text-5xl font-bold mb-1 sm:mb-2 rajput-title">
+              राजपूत ठाकुर
             </h1>
-            <p class="text-amber-200 text-lg flex items-center">
-              <i class="fas fa-shield-alt mr-2"></i>
-              हमारी विरासत, हमारी शान
-            </p>
-            <p class="text-amber-300 text-sm mt-2">
-              Rajput Thakur - The Warrior Heritage
+            <p class="text-amber-200 text-sm sm:text-lg flex items-center justify-center sm:justify-start">
+              <i class="fas fa-shield-alt mr-2"></i>हमारी विरासत, हमारी शान
             </p>
           </div>
-          <div class="hidden md:block text-center">
-            <span id="totalImages" class="text-5xl font-bold text-yellow-300"
-              >0</span
-            >
-            <span class="text-amber-200 ml-2 block">तस्वीरें</span>
-            <div class="rajput-badge mt-2">⚔️ गौरवशाली इतिहास ⚔️</div>
+          <div class="text-center">
+            <span id="totalImages" class="text-3xl sm:text-5xl font-bold text-yellow-300">0</span>
+            <span class="text-amber-200 ml-1 sm:ml-2 text-sm sm:text-base">तस्वीरें</span>
           </div>
         </div>
       </div>
 
       <!-- ===== RAJPUT QUOTE ===== -->
-      <div class="text-center mb-8 sword-divider">
-        <span class="text-xl text-amber-800 italic rajput-title"
-          >"खून से रंगी तलवारें, पर हृदय में करुणा"</span
-        >
+      <div class="text-center mb-4 sm:mb-8 sword-divider">
+        <span class="text-sm sm:text-xl text-amber-800 italic rajput-title px-2">
+          "खून से रंगी तलवारें, पर हृदय में करुणा"
+        </span>
       </div>
 
-      <!-- ===== FILTERS AND SORT ===== -->
-      <div
-        class="bg-white/90 backdrop-blur-sm rounded-xl royal-shadow p-4 mb-6 flex flex-wrap gap-4 justify-between items-center border-l-4 border-amber-700"
-      >
-        <!-- Category Filters -->
-        <div class="flex space-x-2">
-          <button
-            class="px-4 py-2 bg-amber-700 text-white rounded-lg text-sm flex items-center"
-          >
-            <i class="fas fa-shield-alt mr-2"></i>सभी
+      <!-- ===== FILTERS AND SORT - Mobile Scrollable ===== -->
+      <div class="bg-white/90 backdrop-blur-sm rounded-xl royal-shadow p-3 sm:p-4 mb-4 sm:mb-6 border-l-4 border-amber-700">
+        
+        <!-- Category Filters - Horizontal Scroll on Mobile -->
+        <div class="scrollable-categories mb-3 sm:mb-0 sm:flex sm:space-x-2">
+          <button class="px-3 sm:px-4 py-1.5 sm:py-2 bg-amber-700 text-white rounded-lg text-xs sm:text-sm whitespace-nowrap">
+            <i class="fas fa-shield-alt mr-1"></i>सभी
           </button>
-          <button
-            class="px-4 py-2 bg-amber-100 text-amber-800 rounded-lg text-sm hover:bg-amber-200 transition"
-          >
+          <button class="px-3 sm:px-4 py-1.5 sm:py-2 bg-amber-100 text-amber-800 rounded-lg text-xs sm:text-sm whitespace-nowrap">
             ⚔️ योद्धा
           </button>
-          <button
-            class="px-4 py-2 bg-amber-100 text-amber-800 rounded-lg text-sm hover:bg-amber-200 transition"
-          >
+          <button class="px-3 sm:px-4 py-1.5 sm:py-2 bg-amber-100 text-amber-800 rounded-lg text-xs sm:text-sm whitespace-nowrap">
             🏰 किले
           </button>
-          <button
-            class="px-4 py-2 bg-amber-100 text-amber-800 rounded-lg text-sm hover:bg-amber-200 transition"
-          >
-            👑 राजा-महाराजा
+          <button class="px-3 sm:px-4 py-1.5 sm:py-2 bg-amber-100 text-amber-800 rounded-lg text-xs sm:text-sm whitespace-nowrap">
+            👑 राजा
           </button>
         </div>
 
         <!-- Sort Options -->
-        <div class="flex items-center space-x-4">
-          <select
-            id="sortSelect"
-            onchange="sortImages()"
-            class="border-2 border-amber-200 rounded-lg px-4 py-2 focus:border-amber-700 outline-none bg-white"
-          >
+        <div class="flex justify-end">
+          <select id="sortSelect" onchange="sortImages()" 
+            class="border-2 border-amber-200 rounded-lg px-3 py-1.5 sm:px-4 sm:py-2 text-xs sm:text-sm focus:border-amber-700 outline-none bg-white w-full sm:w-auto">
             <option value="newest">नई पहले</option>
             <option value="oldest">पुरानी पहले</option>
             <option value="name">नाम (अ to ज्ञ)</option>
-            <option value="nameDesc">नाम (ज्ञ to अ)</option>
           </select>
         </div>
       </div>
 
       <!-- ===== IMAGE COUNT ===== -->
-      <div class="flex justify-between items-center mb-6">
-        <h2
-          class="text-2xl font-bold text-amber-900 flex items-center rajput-title"
-        >
-          <i class="fas fa-images text-amber-700 mr-3"></i>
-          हमारी गैलरी
+      <div class="flex justify-between items-center mb-4 sm:mb-6">
+        <h2 class="text-lg sm:text-2xl font-bold text-amber-900 flex items-center rajput-title">
+          <i class="fas fa-images text-amber-700 mr-2 sm:mr-3"></i>हमारी गैलरी
         </h2>
-        <span
-          id="imageCount"
-          class="bg-gradient-to-r from-amber-700 to-amber-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-md border-2 border-yellow-400"
-        >
+        <span id="imageCount" class="bg-gradient-to-r from-amber-700 to-amber-600 text-white px-3 py-1 sm:px-4 sm:py-2 rounded-full text-xs sm:text-sm font-semibold border-2 border-yellow-400">
           Loading...
         </span>
       </div>
 
-      <!-- ===== LOADING SKELETON ===== -->
-      <div
-        id="loadingSkeleton"
-        class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
-      >
-        <!-- 8 skeleton cards -->
-        <div class="skeleton h-72 rounded-xl"></div>
-        <div class="skeleton h-72 rounded-xl"></div>
-        <div class="skeleton h-72 rounded-xl"></div>
-        <div class="skeleton h-72 rounded-xl"></div>
-        <div class="skeleton h-72 rounded-xl"></div>
-        <div class="skeleton h-72 rounded-xl"></div>
-        <div class="skeleton h-72 rounded-xl"></div>
-        <div class="skeleton h-72 rounded-xl"></div>
+      <!-- ===== LOADING SKELETON - Mobile Responsive ===== -->
+      <div id="loadingSkeleton" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+        <!-- 8 skeleton cards - Mobile par 2 column -->
+        <div class="skeleton h-48 sm:h-72 rounded-xl"></div>
+        <div class="skeleton h-48 sm:h-72 rounded-xl"></div>
+        <div class="skeleton h-48 sm:h-72 rounded-xl"></div>
+        <div class="skeleton h-48 sm:h-72 rounded-xl"></div>
+        <div class="skeleton h-48 sm:h-72 rounded-xl"></div>
+        <div class="skeleton h-48 sm:h-72 rounded-xl"></div>
+        <div class="skeleton h-48 sm:h-72 rounded-xl"></div>
+        <div class="skeleton h-48 sm:h-72 rounded-xl"></div>
       </div>
 
-      <!-- ===== IMAGE GRID ===== -->
-      <div
-        id="imageGrid"
-        class="hidden grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"
-      >
+      <!-- ===== IMAGE GRID - Mobile: 2 columns, Desktop: 4 columns ===== -->
+      <div id="imageGrid" class="hidden grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
         <!-- Images will be loaded here -->
       </div>
 
-      <!-- ===== EMPTY STATE ===== -->
-      <div
-        id="emptyState"
-        class="hidden text-center py-20 bg-white/50 rounded-3xl royal-border"
-      >
-        <div class="text-9xl mb-6 animate-bounce">🏰</div>
-        <h2 class="text-4xl font-bold text-amber-900 mb-3 rajput-title">
+      <!-- ===== EMPTY STATE - Mobile Optimized ===== -->
+      <div id="emptyState" class="hidden text-center py-10 sm:py-20 bg-white/50 rounded-2xl sm:rounded-3xl royal-border">
+        <div class="text-6xl sm:text-9xl mb-4 sm:mb-6 animate-bounce">🏰</div>
+        <h2 class="text-2xl sm:text-4xl font-bold text-amber-900 mb-2 sm:mb-3 rajput-title">
           गैलरी खाली है
         </h2>
-        <p class="text-amber-700 text-lg mb-8">
-          अपनी पहली तस्वीर अपलोड करें और इतिहास बनाएं!
+        <p class="text-amber-700 text-sm sm:text-lg mb-4 sm:mb-8 px-4">
+          अपनी पहली तस्वीर अपलोड करें
         </p>
-        <a
-          href="upload.html"
-          class="inline-block bg-gradient-to-r from-amber-700 to-amber-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:shadow-xl transition transform hover:-translate-y-1 border-2 border-yellow-400"
-        >
-          <i class="fas fa-cloud-upload-alt mr-2"></i>
-          पहली तस्वीर अपलोड करें
+        <a href="upload.html" 
+           class="inline-block bg-gradient-to-r from-amber-700 to-amber-600 text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-sm sm:text-lg font-semibold border-2 border-yellow-400">
+          <i class="fas fa-cloud-upload-alt mr-2"></i>पहली तस्वीर अपलोड करें
         </a>
       </div>
 
       <!-- ===== NO RESULTS FOUND ===== -->
-      <div id="noResults" class="hidden text-center py-16">
-        <div class="text-6xl mb-4">⚔️🔍⚔️</div>
-        <h3 class="text-2xl font-bold text-amber-800 mb-2">
+      <div id="noResults" class="hidden text-center py-10 sm:py-16">
+        <div class="text-4xl sm:text-6xl mb-4">⚔️🔍⚔️</div>
+        <h3 class="text-xl sm:text-2xl font-bold text-amber-800 mb-2">
           कोई तस्वीर नहीं मिली
         </h3>
-        <p class="text-amber-600">दूसरे शब्दों से खोजें</p>
+        <p class="text-amber-600 text-sm sm:text-base">दूसरे शब्दों से खोजें</p>
       </div>
     </main>
 
-    <!-- ========== RAJPUT LIGHTBOX ========== -->
-    <div
-      id="lightbox"
-      class="fixed inset-0 bg-black/95 z-50 hidden animate-fadeIn"
-    >
-      <!-- Close Button -->
-      <button
-        onclick="closeLightbox()"
-        class="absolute top-5 right-5 text-white text-4xl hover:text-amber-500 z-50"
-      >
+    <!-- ========== RAJPUT LIGHTBOX - Mobile Optimized ========== -->
+    <div id="lightbox" class="fixed inset-0 bg-black/95 z-50 hidden">
+      
+      <!-- Close Button - Mobile Friendly -->
+      <button onclick="closeLightbox()" class="absolute top-2 right-2 sm:top-5 sm:right-5 text-white text-3xl sm:text-4xl z-50 p-2">
         <i class="fas fa-times"></i>
       </button>
 
-      <!-- Previous Button -->
-      <button
-        onclick="prevImage()"
-        class="absolute left-5 top-1/2 transform -translate-y-1/2 text-white text-4xl hover:text-amber-500"
-      >
+      <!-- Navigation Buttons - Mobile Friendly -->
+      <button onclick="prevImage()" class="absolute left-1 sm:left-5 top-1/2 transform -translate-y-1/2 text-white text-3xl sm:text-4xl p-2">
         <i class="fas fa-chevron-left"></i>
       </button>
-
-      <!-- Next Button -->
-      <button
-        onclick="nextImage()"
-        class="absolute right-5 top-1/2 transform -translate-y-1/2 text-white text-4xl hover:text-amber-500"
-      >
+      <button onclick="nextImage()" class="absolute right-1 sm:right-5 top-1/2 transform -translate-y-1/2 text-white text-3xl sm:text-4xl p-2">
         <i class="fas fa-chevron-right"></i>
       </button>
 
       <!-- Image Container -->
-      <div class="h-full flex items-center justify-center p-4">
-        <img
-          id="lightboxImg"
-          src=""
-          alt=""
-          class="max-h-[90vh] max-w-[90vw] object-contain rounded-lg animate-scaleIn border-4 border-amber-700"
-        />
+      <div class="h-full flex items-center justify-center p-2 sm:p-4">
+        <img id="lightboxImg" src="" alt="" 
+          class="max-h-[80vh] sm:max-h-[90vh] max-w-[95vw] sm:max-w-[90vw] object-contain rounded-lg border-2 sm:border-4 border-amber-700">
       </div>
 
-      <!-- Image Info Bar - Rajput Style -->
-      <div
-        class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-amber-900/95 to-transparent p-6 text-white"
-      >
-        <div class="max-w-4xl mx-auto flex justify-between items-end">
+      <!-- Image Info Bar - Mobile Stacked -->
+      <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-amber-900/95 to-transparent p-3 sm:p-6 text-white">
+        <div class="max-w-4xl mx-auto flex flex-col sm:flex-row justify-between items-start sm:items-end gap-3">
           <div>
-            <h3
-              id="lightboxTitle"
-              class="text-3xl font-bold mb-2 rajput-title flex items-center"
-            >
-              <i class="fas fa-crown text-yellow-400 mr-3 text-2xl"></i>
+            <h3 class="text-lg sm:text-3xl font-bold mb-1 rajput-title flex items-center">
+              <i class="fas fa-crown text-yellow-400 mr-2 text-sm sm:text-2xl"></i>
               <span id="lightboxTitle"></span>
             </h3>
-            <p id="lightboxDescription" class="text-amber-200 mb-2"></p>
-            <div class="text-sm flex items-center">
-              <i class="far fa-calendar mr-2 text-amber-400"></i>
+            <p id="lightboxDescription" class="text-amber-200 text-xs sm:text-sm mb-1"></p>
+            <div class="text-xs sm:text-sm">
+              <i class="far fa-calendar mr-1 text-amber-400"></i>
               <span id="lightboxDate"></span>
             </div>
           </div>
 
-          <!-- Download Button with Rajput Style -->
-          <div>
-            <button
-              onclick="downloadCurrentImage()"
-              class="bg-amber-700 hover:bg-amber-600 text-white px-8 py-3 rounded-lg transition flex items-center border-2 border-yellow-400 font-bold"
-            >
-              <i class="fas fa-download mr-2"></i>
-              तस्वीर डाउनलोड करें
-            </button>
-          </div>
+          <!-- Download Button - Mobile Full Width -->
+          <button onclick="downloadCurrentImage()" 
+            class="w-full sm:w-auto bg-amber-700 hover:bg-amber-600 text-white px-4 sm:px-8 py-2 sm:py-3 rounded-lg text-sm sm:text-base border-2 border-yellow-400 font-bold">
+            <i class="fas fa-download mr-2"></i>डाउनलोड
+          </button>
         </div>
       </div>
 
-      <!-- Thumbnail Strip -->
-      <div
-        class="absolute bottom-24 left-0 right-0 flex justify-center space-x-2 p-2"
-      >
-        <div
-          id="thumbnailStrip"
-          class="flex space-x-2 overflow-x-auto max-w-3xl p-2 bg-black/50 rounded-xl border border-amber-700"
-        >
+      <!-- Thumbnail Strip - Mobile Horizontal Scroll -->
+      <div class="absolute bottom-20 sm:bottom-24 left-0 right-0 flex justify-center p-2">
+        <div id="thumbnailStrip" class="flex space-x-2 overflow-x-auto max-w-full sm:max-w-3xl p-2 bg-black/50 rounded-xl border border-amber-700">
           <!-- Thumbnails will appear here -->
         </div>
       </div>
     </div>
 
-    <!-- ========== RAJPUT FOOTER ========== -->
-    <footer
-      class="bg-gradient-to-r from-amber-900 to-amber-800 border-t-2 border-yellow-600 mt-16"
-    >
-      <div class="max-w-7xl mx-auto px-4 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-amber-100">
+    <!-- ========== RAJPUT FOOTER - Mobile Optimized ========== -->
+    <footer class="bg-gradient-to-r from-amber-900 to-amber-800 border-t-2 border-yellow-600 mt-8 sm:mt-16">
+      <div class="w-full max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-12">
+        
+        <!-- Footer Grid - Mobile: 1 column, Desktop: 4 columns -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 sm:gap-8 text-amber-100">
+          
           <!-- About Rajput -->
-          <div>
-            <h4
-              class="font-bold text-white text-lg mb-4 flex items-center rajput-title"
-            >
-              <i class="fas fa-shield-alt mr-2"></i>
-              राजपूत ठाकुर
+          <div class="text-center sm:text-left">
+            <h4 class="font-bold text-white text-base sm:text-lg mb-3 rajput-title">
+              <i class="fas fa-shield-alt mr-2"></i>राजपूत ठाकुर
             </h4>
-            <p class="text-amber-200 text-sm">
-              हमारा गौरवशाली इतिहास, हमारी वीर गाथाएं, हमारी संस्कृति - एक मंच
-              पर।
+            <p class="text-amber-200 text-xs sm:text-sm">
+              हमारा गौरवशाली इतिहास, हमारी वीर गाथाएं।
             </p>
-            <div class="mt-4 text-2xl">
-              <span>⚔️</span>
-              <span class="mx-2">🛡️</span>
-              <span>👑</span>
-            </div>
           </div>
 
           <!-- Quick Links -->
-          <div>
-            <h4 class="font-bold text-white text-lg mb-4">
-              महत्वपूर्ण कड़ियाँ
-            </h4>
-            <ul class="space-y-2 text-sm">
-              <li>
-                <a
-                  href="#"
-                  class="text-amber-200 hover:text-white transition flex items-center"
-                  ><i class="fas fa-history mr-2 w-5"></i>इतिहास</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-amber-200 hover:text-white transition flex items-center"
-                  ><i class="fas fa-landmark mr-2 w-5"></i>किले</a
-                >
-              </li>
-              <li>
-                <a
-                  href="#"
-                  class="text-amber-200 hover:text-white transition flex items-center"
-                  ><i class="fas fa-crown mr-2 w-5"></i>महाराजा</a
-                >
-              </li>
+          <div class="text-center sm:text-left">
+            <h4 class="font-bold text-white text-base sm:text-lg mb-3">कड़ियाँ</h4>
+            <ul class="space-y-2 text-xs sm:text-sm">
+              <li><a href="#" class="text-amber-200 hover:text-white"><i class="fas fa-history mr-2"></i>इतिहास</a></li>
+              <li><a href="#" class="text-amber-200 hover:text-white"><i class="fas fa-landmark mr-2"></i>किले</a></li>
             </ul>
           </div>
 
-          <!-- Stats -->
-          <div>
-            <h4 class="font-bold text-white text-lg mb-4">गैलरी आंकड़े</h4>
-            <ul class="space-y-2 text-sm">
-              <li class="flex items-center">
-                <i class="fas fa-image mr-2 text-amber-400"></i>कुल तस्वीरें:
-                <span
-                  id="footerImageCount"
-                  class="font-semibold ml-2 text-white"
-                  >0</span
-                >
-              </li>
-              <li class="flex items-center">
-                <i class="fas fa-clock mr-2 text-amber-400"></i>आखिरी अपलोड:
-                <span id="lastUpload" class="font-semibold ml-2 text-white"
-                  >कभी नहीं</span
-                >
-              </li>
-            </ul>
+          <!-- Instagram -->
+          <div class="text-center sm:text-left">
+            <h4 class="font-bold text-white text-base sm:text-lg mb-3">सोशल</h4>
+            <a href="https://www.instagram.com/thakur__209_/" target="_blank" 
+               class="text-amber-200 hover:text-white text-2xl">
+              <i class="fab fa-instagram"></i>
+            </a>
           </div>
 
-          <!-- Social/Culture -->
-          <div>
-            <h4 class="font-bold text-white text-lg mb-4">संस्कृति</h4>
-            <div class="flex space-x-4 text-3xl">
-              <span>🎭</span>
-              <span>🏹</span>
-              <span>🐎</span>
-              <span>🏰</span>
-            </div>
-            <p class="text-amber-200 text-sm mt-4">गौरव गाथा राजपूतों की</p>
+          <!-- Credit -->
+          <div class="text-center">
+            <p class="text-amber-300 text-xs sm:text-sm">
+              © 2026 राजपूत ठाकुर गैलरी
+            </p>
+            <p class="text-yellow-400 text-xs mt-2">
+              थाकुर गौरव सिंह भदौरिया
+            </p>
           </div>
         </div>
 
-        <div
-          class="border-t border-amber-700 mt-8 pt-8 text-center text-amber-300 text-sm"
-        >
-          <p>© 
-2026 राजपूत ठाकुर गैलरी | गौरवशाली विरासत को समर्पित</p>
-          <p class="text-xs mt-2">⚔️ वीरता • शौर्य • बलिदान ⚔️</p>
-          <a  href="https://www.instagram.com/thakur__209_/" target='_blank' class="hover:text-white transition"><i class="fab fa-instagram"></i></a>
+        <!-- Bottom Bar -->
+        <div class="border-t border-amber-700 mt-6 sm:mt-8 pt-4 sm:pt-6 text-center">
+          <p class="text-xs sm:text-sm text-amber-300">
+            ⚔️ वीरता • शौर्य • बलिदान ⚔️
+          </p>
         </div>
       </div>
     </footer>
 
-    <!-- ========== JAVASCRIPT (Same as before but with Rajput messages) ========== -->
+    <!-- JavaScript -->
     <script>
       // Global variables
       let images = [];
       let currentLightboxIndex = 0;
       let filteredImages = [];
+
+      // Mobile Menu Toggle
+      document.getElementById('mobileMenuBtn')?.addEventListener('click', function() {
+        const menu = document.getElementById('mobileMenu');
+        menu.classList.toggle('hidden');
+      });
+
+      // Search Inputs Sync
+      document.getElementById('searchInput')?.addEventListener('input', function(e) {
+        searchImages(e.target.value);
+      });
+      
+      document.getElementById('mobileSearchInput')?.addEventListener('input', function(e) {
+        searchImages(e.target.value);
+        document.getElementById('searchInput').value = e.target.value;
+      });
 
       // ===== INITIALIZATION =====
       document.addEventListener("DOMContentLoaded", function () {
@@ -601,18 +553,9 @@
       });
 
       function setupEventListeners() {
-        // Search input
-        document
-          .getElementById("searchInput")
-          ?.addEventListener("input", function (e) {
-            searchImages(e.target.value);
-          });
-
         // Keyboard navigation for lightbox
         document.addEventListener("keydown", function (e) {
-          if (
-            !document.getElementById("lightbox").classList.contains("hidden")
-          ) {
+          if (!document.getElementById("lightbox").classList.contains("hidden")) {
             if (e.key === "Escape") closeLightbox();
             if (e.key === "ArrowLeft") prevImage();
             if (e.key === "ArrowRight") nextImage();
@@ -622,18 +565,15 @@
 
       // ===== LOAD IMAGES FROM LOCALSTORAGE =====
       function loadImages() {
-        // Show skeleton
         document.getElementById("loadingSkeleton").style.display = "grid";
         document.getElementById("imageGrid").classList.add("hidden");
         document.getElementById("emptyState").classList.add("hidden");
 
-        // Simulate loading for smooth UX
         setTimeout(() => {
           const savedImages = localStorage.getItem("galleryImages");
           images = savedImages ? JSON.parse(savedImages) : [];
           filteredImages = [...images];
 
-          // Hide skeleton
           document.getElementById("loadingSkeleton").style.display = "none";
 
           if (images.length === 0) {
@@ -669,45 +609,35 @@
       // ===== CREATE IMAGE CARD =====
       function createImageCard(image, index) {
         const div = document.createElement("div");
-        div.className =
-          "gallery-item bg-white/95 rounded-xl shadow-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:shadow-2xl border-2 border-amber-200 hover:border-amber-600";
+        div.className = "gallery-item bg-white/95 rounded-lg sm:rounded-xl shadow-lg overflow-hidden cursor-pointer border border-amber-200";
 
-        // Find actual index in original images array
         const originalIndex = images.findIndex((img) => img.id === image.id);
 
         div.innerHTML = `
-        <div class="relative overflow-hidden group rajput-shield-hover" onclick="openLightbox(${originalIndex})">
-            <img src="${image.dataUrl}" 
-                 alt="${image.title}"
-                 class="w-full h-56 object-cover group-hover:scale-110 transition duration-500"
+          <div class="relative overflow-hidden group" onclick="openLightbox(${originalIndex})">
+            <img src="${image.dataUrl}" alt="${image.title}"
+                 class="w-full h-40 sm:h-56 object-cover group-hover:scale-110 transition duration-500"
                  loading="lazy">
             
-            <!-- Rajput Overlay -->
             <div class="absolute inset-0 bg-gradient-to-t from-amber-900/90 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300">
-                <div class="absolute top-3 right-3">
-                    <button onclick="event.stopPropagation(); downloadImage('${image.dataUrl}', '${image.title}')" 
-                            class="bg-amber-700 hover:bg-amber-600 text-white p-2 rounded-full transition transform hover:scale-110 border border-yellow-400">
-                        <i class="fas fa-download text-sm"></i>
-                    </button>
-                </div>
-                
-                <div class="absolute bottom-3 left-3 right-3 text-white">
-                    <h3 class="font-bold text-lg mb-1 rajput-title flex items-center">
-                        <i class="fas fa-crown text-yellow-400 mr-2 text-xs"></i>
-                        ${image.title}
-                    </h3>
-                    <div class="text-xs flex items-center">
-                        <i class="far fa-calendar mr-1"></i>${formatDate(image.date)}
-                    </div>
-                </div>
+              <div class="absolute top-2 right-2">
+                <button onclick="event.stopPropagation(); downloadImage('${image.dataUrl}', '${image.title}')" 
+                        class="bg-amber-700 text-white p-1.5 sm:p-2 rounded-full text-xs">
+                  <i class="fas fa-download"></i>
+                </button>
+              </div>
+              
+              <div class="absolute bottom-2 left-2 right-2 text-white">
+                <h3 class="font-bold text-xs sm:text-sm truncate">${image.title}</h3>
+                <div class="text-[10px] sm:text-xs"><i class="far fa-calendar"></i> ${formatDate(image.date)}</div>
+              </div>
             </div>
             
-            <!-- Rajput Badge -->
-            <div class="absolute top-3 left-3 bg-amber-800/90 text-white text-xs px-3 py-1 rounded-full border border-yellow-500">
-                <i class="fas fa-shield-alt mr-1"></i> राजपूत
+            <div class="absolute top-2 left-2 bg-amber-800/90 text-white text-[10px] sm:text-xs px-2 py-0.5 rounded-full">
+              राजपूत
             </div>
-        </div>
-    `;
+          </div>
+        `;
 
         return div;
       }
@@ -717,19 +647,12 @@
         currentLightboxIndex = index;
         const image = images[index];
 
-        // Update lightbox content
         document.getElementById("lightboxImg").src = image.dataUrl;
         document.getElementById("lightboxTitle").textContent = image.title;
-        document.getElementById("lightboxDescription").textContent =
-          image.description || "कोई विवरण नहीं";
-        document.getElementById("lightboxDate").textContent = formatDateFull(
-          image.date,
-        );
+        document.getElementById("lightboxDescription").textContent = image.description || "कोई विवरण नहीं";
+        document.getElementById("lightboxDate").textContent = formatDateFull(image.date);
 
-        // Create thumbnails
         createThumbnails();
-
-        // Show lightbox
         document.getElementById("lightbox").classList.remove("hidden");
         document.body.style.overflow = "hidden";
       }
@@ -745,8 +668,7 @@
       }
 
       function prevImage() {
-        currentLightboxIndex =
-          (currentLightboxIndex - 1 + images.length) % images.length;
+        currentLightboxIndex = (currentLightboxIndex - 1 + images.length) % images.length;
         updateLightboxImage();
       }
 
@@ -754,13 +676,8 @@
         const image = images[currentLightboxIndex];
         document.getElementById("lightboxImg").src = image.dataUrl;
         document.getElementById("lightboxTitle").textContent = image.title;
-        document.getElementById("lightboxDescription").textContent =
-          image.description || "कोई विवरण नहीं";
-        document.getElementById("lightboxDate").textContent = formatDateFull(
-          image.date,
-        );
-
-        // Highlight current thumbnail
+        document.getElementById("lightboxDescription").textContent = image.description || "कोई विवरण नहीं";
+        document.getElementById("lightboxDate").textContent = formatDateFull(image.date);
         highlightCurrentThumbnail();
       }
 
@@ -771,7 +688,7 @@
         images.forEach((img, idx) => {
           const thumb = document.createElement("img");
           thumb.src = img.dataUrl;
-          thumb.className = `w-16 h-16 object-cover rounded-lg cursor-pointer transition hover:opacity-100 border-2 ${idx === currentLightboxIndex ? "opacity-100 border-yellow-400" : "opacity-50 hover:opacity-75 border-transparent"}`;
+          thumb.className = `w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg cursor-pointer border-2 ${idx === currentLightboxIndex ? "border-yellow-400" : "border-transparent opacity-50"}`;
           thumb.onclick = () => {
             currentLightboxIndex = idx;
             updateLightboxImage();
@@ -783,13 +700,7 @@
       function highlightCurrentThumbnail() {
         const thumbs = document.getElementById("thumbnailStrip").children;
         Array.from(thumbs).forEach((thumb, idx) => {
-          if (idx === currentLightboxIndex) {
-            thumb.className =
-              "w-16 h-16 object-cover rounded-lg cursor-pointer opacity-100 border-2 border-yellow-400";
-          } else {
-            thumb.className =
-              "w-16 h-16 object-cover rounded-lg cursor-pointer opacity-50 hover:opacity-75 border-2 border-transparent";
-          }
+          thumb.className = `w-12 h-12 sm:w-16 sm:h-16 object-cover rounded-lg cursor-pointer border-2 ${idx === currentLightboxIndex ? "border-yellow-400" : "border-transparent opacity-50"}`;
         });
       }
 
@@ -803,32 +714,8 @@
         const link = document.createElement("a");
         link.href = dataUrl;
         link.download = `${fileName.replace(/[^a-z0-9]/gi, "_").toLowerCase()}.jpg`;
-        document.body.appendChild(link);
         link.click();
-        document.body.removeChild(link);
-
         showToast("तस्वीर डाउनलोड हो रही है...");
-      }
-
-      function deleteImage(index) {
-        if (confirm("क्या आप यह तस्वीर हटाना चाहते हैं?")) {
-          images.splice(index, 1);
-          saveImages();
-
-          // Close lightbox if open
-          closeLightbox();
-
-          // Reload gallery
-          filteredImages = [...images];
-          displayImages();
-          updateStats();
-
-          showToast("तस्वीर हटा दी गई!", "error");
-
-          if (images.length === 0) {
-            showEmptyState();
-          }
-        }
       }
 
       // ===== SEARCH FUNCTION =====
@@ -838,20 +725,16 @@
         } else {
           query = query.toLowerCase();
           filteredImages = images.filter(
-            (img) =>
-              img.title.toLowerCase().includes(query) ||
-              (img.description &&
-                img.description.toLowerCase().includes(query)),
+            img => img.title.toLowerCase().includes(query) ||
+            (img.description && img.description.toLowerCase().includes(query))
           );
         }
-
         displayImages();
       }
 
       // ===== SORT FUNCTION =====
       function sortImages() {
         const sortBy = document.getElementById("sortSelect").value;
-
         switch (sortBy) {
           case "newest":
             filteredImages.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -862,11 +745,7 @@
           case "name":
             filteredImages.sort((a, b) => a.title.localeCompare(b.title));
             break;
-          case "nameDesc":
-            filteredImages.sort((a, b) => b.title.localeCompare(a.title));
-            break;
         }
-
         displayImages();
       }
 
@@ -876,19 +755,15 @@
       }
 
       function updateImageCount() {
-        document.getElementById("imageCount").textContent =
+        document.getElementById("imageCount").textContent = 
           `${filteredImages.length} तस्वीर${filteredImages.length !== 1 ? "ें" : ""}`;
-        document.getElementById("footerImageCount").textContent = images.length;
         document.getElementById("totalImages").textContent = images.length;
       }
 
       function updateStats() {
         if (images.length > 0) {
-          const lastUpload = new Date(
-            Math.max(...images.map((img) => new Date(img.date))),
-          );
-          document.getElementById("lastUpload").textContent =
-            formatDate(lastUpload);
+          const lastUpload = new Date(Math.max(...images.map(img => new Date(img.date))));
+          document.getElementById("lastUpload").textContent = formatDate(lastUpload);
         }
       }
 
@@ -902,50 +777,25 @@
       function formatDate(dateString) {
         const date = new Date(dateString);
         const now = new Date();
-        const diffTime = Math.abs(now - date);
-        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
+        const diffDays = Math.ceil(Math.abs(now - date) / (1000 * 60 * 60 * 24));
         if (diffDays === 0) return "आज";
         if (diffDays === 1) return "कल";
         if (diffDays < 7) return `${diffDays} दिन पहले`;
-        if (diffDays < 30) return `${Math.floor(diffDays / 7)} सप्ताह पहले`;
-        return date.toLocaleDateString("hi-IN", {
-          month: "short",
-          day: "numeric",
-        });
+        return date.toLocaleDateString("hi-IN", { month: "short", day: "numeric" });
       }
 
       function formatDateFull(dateString) {
         return new Date(dateString).toLocaleDateString("hi-IN", {
-          weekday: "long",
-          year: "numeric",
-          month: "long",
-          day: "numeric",
+          weekday: "long", year: "numeric", month: "long", day: "numeric"
         });
       }
 
-      function showToast(message, type = "success") {
+      function showToast(message) {
         const toast = document.createElement("div");
-        toast.className = `fixed bottom-5 right-5 px-6 py-3 rounded-lg shadow-lg text-white transform transition-all duration-500 z-50 border-2 border-yellow-400 ${
-          type === "success" ? "bg-amber-700" : "bg-red-700"
-        }`;
-        toast.innerHTML = `
-        <div class="flex items-center">
-            <i class="fas ${type === "success" ? "fa-check-circle" : "fa-exclamation-circle"} mr-2"></i>
-            <span>${message}</span>
-        </div>
-    `;
-
+        toast.className = "fixed bottom-5 right-5 px-4 py-2 bg-amber-700 text-white rounded-lg text-sm z-50 border-2 border-yellow-400";
+        toast.innerHTML = `<i class="fas fa-check-circle mr-2"></i>${message}`;
         document.body.appendChild(toast);
-
-        setTimeout(() => {
-          toast.style.transform = "translateY(0)";
-        }, 100);
-
-        setTimeout(() => {
-          toast.style.transform = "translateY(100px)";
-          setTimeout(() => toast.remove(), 500);
-        }, 3000);
+        setTimeout(() => toast.remove(), 2000);
       }
     </script>
   </body>

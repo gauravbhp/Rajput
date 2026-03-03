@@ -3,792 +3,272 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>तस्वीर अपलोड - राजपूत ठाकुर गैलरी</title>
-    
-    <!-- Tailwind CSS -->
+    <title>Neon DB Upload - राजपूत ठाकुर</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Google Fonts for Royal Look -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-    
     <style>
-        /* Rajput Theme Styling */
         body {
-            font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #fdf4e3 0%, #f5e6d3 100%);
         }
-        
-        .rajput-title {
-            font-family: 'Playfair Display', serif;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
-        }
-        
-        /* Royal Border Pattern */
-        .royal-border {
-            border: 2px solid #b8860b;
-            position: relative;
-        }
-        
-        .royal-border::before {
-            content: "⚔️";
-            position: absolute;
-            top: -15px;
-            left: 20px;
-            background: #fdf4e3;
-            padding: 0 10px;
-            font-size: 20px;
-        }
-        
-        /* Saffron Theme */
-        .bg-rajput {
-            background: linear-gradient(135deg, #ff9933 0%, #ff7700 100%);
-        }
-        
-        .text-rajput {
-            color: #ff7700;
-        }
-        
-        .border-rajput {
-            border-color: #ff9933;
-        }
-        
-        /* Sword Divider */
-        .sword-divider {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 20px;
-        }
-        
-        .sword-divider::before,
-        .sword-divider::after {
-            content: "⚔️";
-            font-size: 24px;
-            opacity: 0.5;
-        }
-        
-        /* Rajput Pattern Background */
-        .pattern-bg {
-            background-color: #fdf4e3;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 L55 30 L30 55 L5 30 Z' fill='none' stroke='%23ff9933' stroke-width='0.5' opacity='0.2'/%3E%3C/svg%3E");
-        }
-        
-        /* Upload area hover effect */
-        .rajput-upload-zone {
-            transition: all 0.3s ease;
-            border: 3px dashed #b8860b;
-        }
-        
-        .rajput-upload-zone:hover {
-            border-color: #ff9933;
-            background-color: rgba(255, 153, 51, 0.05);
-            transform: translateY(-2px);
-        }
-        
-        /* Royal shadow */
-        .royal-shadow {
-            box-shadow: 0 10px 30px -5px rgba(184, 134, 11, 0.3);
-        }
-        
-        /* Form input styling */
-        .rajput-input {
-            border: 2px solid #e6d5b8;
+        .upload-zone {
+            border: 2px dashed #b8860b;
             transition: all 0.3s ease;
         }
-        
-        .rajput-input:focus {
-            border-color: #b8860b;
-            box-shadow: 0 0 0 3px rgba(184, 134, 11, 0.2);
-            outline: none;
-        }
-        
-        /* Rajput badge */
-        .rajput-badge {
-            background: linear-gradient(135deg, #b8860b 0%, #daa520 100%);
-            color: white;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-            display: inline-block;
-        }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        
-        ::-webkit-scrollbar-track {
-            background: #f5e6d3;
-        }
-        
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(to bottom, #ff9933, #b8860b);
-            border-radius: 5px;
-        }
-        
-        /* Preview image animation */
-        .preview-enter {
-            animation: royalFadeIn 0.5s ease-out;
-        }
-        
-        @keyframes royalFadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.9);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        .upload-zone:hover {
+            border-color: #ff9933;
+            background: rgba(255, 153, 51, 0.05);
         }
     </style>
 </head>
-<body class="pattern-bg min-h-screen">
+<body class="min-h-screen">
 
-<!-- ========== RAJPUT ROYAL NAVIGATION ========== -->
-<nav class="bg-gradient-to-r from-amber-900 via-orange-800 to-amber-900 shadow-2xl sticky top-0 z-40 border-b-2 border-yellow-600">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center h-20">
-            <!-- Logo and Brand - Rajput Style -->
-            <div class="flex items-center space-x-8">
-                <a href="index.html" class="flex items-center space-x-3 group">
-                    <span class="text-4xl transform group-hover:scale-110 transition duration-300">⚔️</span>
-                    <div>
-                        <span class="text-2xl font-bold text-white rajput-title tracking-wider">
-                            राजपूत ठाकुर
-                        </span>
-                        <span class="block text-xs text-yellow-300">Rajput Thakur Heritage</span>
-                    </div>
-                </a>
-                
-                <!-- Navigation Links -->
-                <div class="hidden md:flex space-x-2">
-                    <a href="index.html" class="px-4 py-2 text-white/90 hover:text-white transition flex items-center">
-                        <i class="fas fa-home mr-2"></i>गैलरी
-                    </a>
-                    <a href="upload.html" class="px-4 py-2 text-white font-semibold border-b-2 border-yellow-400 flex items-center">
-                        <i class="fas fa-cloud-upload-alt mr-2"></i>अपलोड
-                    </a>
-                </div>
+<!-- Navigation -->
+<nav class="bg-gradient-to-r from-amber-900 to-amber-800 shadow-lg">
+    <div class="max-w-7xl mx-auto px-4 py-3">
+        <div class="flex justify-between items-center">
+            <a href="index.html" class="text-white text-2xl font-bold">
+                ⚔️ राजपूत ठाकुर
+            </a>
+            <div class="space-x-4">
+                <a href="index.html" class="text-amber-200 hover:text-white">गैलरी</a>
+                <a href="upload.html" class="text-white font-semibold">अपलोड</a>
             </div>
-            
-            <!-- Right Side - Rajput Crown -->
-            <div class="text-3xl">👑</div>
         </div>
     </div>
 </nav>
 
-<!-- ========== MAIN CONTENT ========== -->
-<main class="max-w-4xl mx-auto px-4 py-12">
-
-    <!-- Header with Sword Divider -->
-    <div class="text-center mb-10">
-        <div class="sword-divider mb-4">
-            <span class="text-4xl">🏰</span>
-        </div>
-        <h1 class="text-5xl font-bold text-amber-900 mb-2 rajput-title">
-            नई तस्वीर अपलोड करें
-        </h1>
-        <p class="text-xl text-amber-700">अपनी राजपूत विरासत को साझा करें</p>
-        <div class="sword-divider mt-4">
-            <span class="text-amber-600">⚔️ गौरव गाथा ⚔️</span>
-        </div>
-    </div>
-
-    <!-- Upload Card -->
-    <div class="bg-white/90 backdrop-blur-sm rounded-3xl royal-shadow p-8 md:p-10 border-2 border-amber-200 relative">
+<!-- Main Content -->
+<main class="max-w-3xl mx-auto px-4 py-12">
+    
+    <div class="bg-white rounded-2xl shadow-xl p-8">
+        <h1 class="text-3xl font-bold text-amber-900 mb-2">Neon DB में अपलोड करें</h1>
+        <p class="text-amber-600 mb-6">आपकी तस्वीरें PostgreSQL database में save होंगी</p>
         
-        <!-- Decorative Corner Elements -->
-        <div class="absolute top-0 left-0 text-3xl opacity-30">⚔️</div>
-        <div class="absolute top-0 right-0 text-3xl opacity-30">🛡️</div>
-        <div class="absolute bottom-0 left-0 text-3xl opacity-30">🏹</div>
-        <div class="absolute bottom-0 right-0 text-3xl opacity-30">👑</div>
-        
-        <!-- Form Starts -->
-        <form id="uploadForm" class="space-y-8 relative z-10">
+        <!-- Upload Form -->
+        <div id="uploadSection" class="space-y-6">
             
-            <!-- Image Title Field -->
+            <!-- Image Title -->
             <div>
-                <label class="block text-amber-900 font-bold mb-2 text-lg">
-                    <i class="fas fa-heading text-amber-700 mr-2"></i>
-                    तस्वीर का नाम <span class="text-red-600">*</span>
-                </label>
-                <input type="text" 
-                       id="imageTitle"
-                       name="title"
-                       required
-                       maxlength="100"
-                       class="rajput-input w-full px-5 py-4 rounded-xl bg-amber-50/50 text-gray-800 placeholder-amber-400"
-                       placeholder="e.g., महाराणा प्रताप, आमेर किला, etc.">
-                <p class="text-amber-600 text-sm mt-2">
-                    <i class="fas fa-info-circle mr-1"></i>
-                    अपनी तस्वीर को एक शानदार नाम दें
-                </p>
+                <label class="block text-gray-700 font-semibold mb-2">तस्वीर का नाम *</label>
+                <input type="text" id="imageTitle" required
+                    class="w-full px-4 py-3 border rounded-lg focus:border-amber-500 outline-none"
+                    placeholder="e.g., महाराणा प्रताप, आमेर किला">
             </div>
-
-            <!-- Image Upload Area with Drag & Drop -->
+            
+            <!-- Description -->
             <div>
-                <label class="block text-amber-900 font-bold mb-2 text-lg">
-                    <i class="fas fa-image text-amber-700 mr-2"></i>
-                    तस्वीर चुनें <span class="text-red-600">*</span>
-                </label>
-                
-                <!-- Hidden File Input -->
-                <input type="file" 
-                       id="imageInput"
-                       name="image"
-                       accept=".jpg,.jpeg,.png,.gif,.webp"
-                       class="hidden">
-                
-                <!-- Drop Zone - Rajput Style -->
-                <div id="dropZone" 
-                     class="rajput-upload-zone relative rounded-2xl p-8 text-center cursor-pointer transition-all bg-amber-50/30 group">
-                    
-                    <!-- Upload Prompt (shown when no image) -->
-                    <div id="uploadPrompt" class="space-y-4">
-                        <div class="text-7xl text-amber-700 group-hover:text-amber-600 transition transform group-hover:scale-110">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                        </div>
-                        <div>
-                            <p class="text-xl text-amber-800 mb-2">
-                                <span class="font-bold text-amber-700">क्लिक करें</span> या खींचकर डालें
-                            </p>
-                            <p class="text-amber-600">⚔️ PNG, JPG, GIF (10MB तक) ⚔️</p>
-                        </div>
-                        
-                        <!-- File Requirements -->
-                        <div class="flex justify-center space-x-6 text-sm text-amber-500">
-                            <span><i class="fas fa-check-circle text-green-600 mr-1"></i> राजपूत विरासत</span>
-                            <span><i class="fas fa-check-circle text-green-600 mr-1"></i> ऐतिहासिक तस्वीरें</span>
-                        </div>
-                    </div>
-
-                    <!-- Image Preview (hidden initially) -->
-                    <div id="imagePreview" class="hidden relative preview-enter">
-                        <img src="" alt="Preview" class="max-h-96 rounded-2xl mx-auto shadow-2xl border-4 border-amber-700">
-                        
-                        <!-- Image Info Overlay -->
-                        <div class="absolute bottom-4 left-4 right-4 bg-gradient-to-t from-amber-900/90 to-transparent text-white p-4 rounded-xl border border-yellow-500">
-                            <div class="flex justify-between items-center">
-                                <div>
-                                    <p id="fileName" class="font-bold flex items-center">
-                                        <i class="fas fa-crown text-yellow-400 mr-2"></i>
-                                        <span id="fileName"></span>
-                                    </p>
-                                    <p id="fileSize" class="text-sm text-amber-200"></p>
-                                </div>
-                                <button type="button" 
-                                        id="removeImage"
-                                        class="bg-red-700 hover:bg-red-600 text-white p-3 rounded-full transition transform hover:scale-110 border border-yellow-400">
-                                    <i class="fas fa-trash"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+                <label class="block text-gray-700 font-semibold mb-2">विवरण (वैकल्पिक)</label>
+                <textarea id="imageDescription" rows="3"
+                    class="w-full px-4 py-3 border rounded-lg focus:border-amber-500 outline-none"
+                    placeholder="इस तस्वीर के बारे में बताएं..."></textarea>
+            </div>
+            
+            <!-- File Upload -->
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">तस्वीर चुनें *</label>
+                <div class="upload-zone rounded-lg p-8 text-center" id="dropZone">
+                    <input type="file" id="fileInput" accept="image/*" class="hidden">
+                    <button type="button" onclick="document.getElementById('fileInput').click()"
+                        class="bg-amber-600 text-white px-6 py-3 rounded-lg hover:bg-amber-700">
+                        <i class="fas fa-cloud-upload-alt mr-2"></i>Image Select करें
+                    </button>
+                    <p id="selectedFile" class="mt-2 text-gray-500 text-sm">कोई फाइल चुनी नहीं</p>
                 </div>
             </div>
-
-            <!-- Image Description -->
-            <div>
-                <label class="block text-amber-900 font-bold mb-2 text-lg">
-                    <i class="fas fa-align-left text-amber-700 mr-2"></i>
-                    विवरण <span class="text-amber-500 text-sm">(वैकल्पिक)</span>
-                </label>
-                <textarea id="imageDescription" 
-                          name="description"
-                          rows="4"
-                          maxlength="500"
-                          class="rajput-input w-full px-5 py-4 rounded-xl bg-amber-50/50 text-gray-800 placeholder-amber-400"
-                          placeholder="इस तस्वीर के पीछे की कहानी बताएं... राजपूत इतिहास, वीरगाथा, etc."></textarea>
-                <p class="text-amber-600 text-sm mt-2">
-                    <i class="fas fa-info-circle mr-1"></i>
-                    अधिकतम 500 अक्षर
-                </p>
+            
+            <!-- Preview -->
+            <div id="preview" class="hidden">
+                <img id="previewImage" class="max-h-64 mx-auto rounded-lg shadow-lg">
             </div>
-
-            <!-- Image Category/Tags -->
-            <div>
-                <label class="block text-amber-900 font-bold mb-2 text-lg">
-                    <i class="fas fa-tags text-amber-700 mr-2"></i>
-                    श्रेणी <span class="text-amber-500 text-sm">(वैकल्पिक)</span>
-                </label>
-                <select id="imageCategory" class="rajput-input w-full px-5 py-4 rounded-xl bg-amber-50/50 text-gray-800">
-                    <option value="" disabled selected>-- श्रेणी चुनें --</option>
-                    <option value="warrior">⚔️ योद्धा / Warrior</option>
-                    <option value="fort">🏰 किला / Fort</option>
-                    <option value="king">👑 राजा / King</option>
-                    <option value="culture">🎭 संस्कृति / Culture</option>
-                    <option value="ceremony">🎊 समारोह / Ceremony</option>
-                    <option value="other">🔄 अन्य / Other</option>
-                </select>
-                <p class="text-amber-600 text-sm mt-2">
-                    <i class="fas fa-info-circle mr-1"></i>
-                    सही श्रेणी चुनें ताकि तस्वीर आसानी से मिले
-                </p>
-            </div>
-
-            <!-- Progress Bar (hidden initially) -->
-            <div id="uploadProgress" class="hidden space-y-2">
-                <div class="flex justify-between text-sm">
-                    <span class="font-bold text-amber-800 flex items-center">
-                        <i class="fas fa-spinner fa-spin mr-2"></i>अपलोड हो रहा है...
-                    </span>
-                    <span id="progressPercent" class="font-bold text-amber-700">0%</span>
+            
+            <!-- Upload Button -->
+            <button id="uploadBtn" onclick="uploadToNeonDB()" disabled
+                class="w-full bg-gradient-to-r from-amber-700 to-amber-600 text-white py-4 rounded-xl font-bold text-lg disabled:opacity-50">
+                <i class="fas fa-database mr-2"></i>Neon DB में अपलोड करें
+            </button>
+            
+            <!-- Progress Bar -->
+            <div id="progress" class="hidden">
+                <div class="flex justify-between mb-1">
+                    <span class="text-sm font-medium text-amber-700">Uploading...</span>
+                    <span id="progressPercent" class="text-sm font-medium text-amber-700">0%</span>
                 </div>
-                <div class="w-full bg-amber-200 rounded-full h-4 overflow-hidden border border-amber-600">
-                    <div id="progressBar" 
-                         class="bg-gradient-to-r from-amber-700 to-amber-500 h-4 rounded-full transition-all duration-300"
-                         style="width: 0%"></div>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div id="progressBar" class="bg-amber-600 h-2.5 rounded-full" style="width: 0%"></div>
                 </div>
-                <p class="text-amber-500 text-sm text-center">कृपया इस पेज को बंद न करें</p>
             </div>
-
-            <!-- Action Buttons -->
-            <div class="flex gap-4 pt-6">
-                <!-- Upload Button -->
-                <button type="submit" 
-                        id="submitBtn"
-                        class="flex-1 bg-gradient-to-r from-amber-800 to-amber-700 text-white px-8 py-4 rounded-xl hover:shadow-2xl transition-all transform hover:-translate-y-1 font-bold text-lg flex items-center justify-center border-2 border-yellow-500">
-                    <i class="fas fa-cloud-upload-alt mr-3 text-2xl"></i>
-                    तस्वीर अपलोड करें
-                </button>
-                
-                <!-- Cancel Button -->
-                <a href="index.html" 
-                   class="flex-1 bg-amber-100 text-amber-800 px-8 py-4 rounded-xl hover:bg-amber-200 transition-all font-bold text-lg text-center flex items-center justify-center border-2 border-amber-300">
-                    <i class="fas fa-times mr-3 text-2xl"></i>
-                    रद्द करें
-                </a>
-            </div>
-
-            <!-- Rajput Honor Code -->
-            <p class="text-center text-amber-600 text-sm mt-4">
-                <i class="fas fa-shield-alt mr-1"></i>
-                आप राजपूत ठाकुर समुदाय की गरिमा बनाए रखने का वचन देते हैं
-            </p>
-        </form>
-    </div>
-
-    <!-- Upload Guidelines - Rajput Style -->
-    <div class="mt-8 bg-amber-100/80 rounded-xl p-6 border border-amber-300">
-        <h3 class="font-bold text-amber-900 mb-3 flex items-center">
-            <i class="fas fa-scroll text-amber-700 mr-2"></i>
-            राजपूत ठाकुर - अपलोड दिशानिर्देश
-        </h3>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-amber-800">
-            <div class="flex items-center">
-                <span class="mr-2">⚔️</span> केवल राजपूत संस्कृति से जुड़ी तस्वीरें
-            </div>
-            <div class="flex items-center">
-                <span class="mr-2">🏰</span> किलों, महलों की तस्वीरें
-            </div>
-            <div class="flex items-center">
-                <span class="mr-2">👑</span> राजपूत राजाओं, योद्धाओं की तस्वीरें
-            </div>
-            <div class="flex items-center">
-                <span class="mr-2">🎭</span> राजपूती संस्कृति, परंपराएं
-            </div>
+            
+            <!-- Status Message -->
+            <div id="statusMessage" class="hidden p-4 rounded-lg"></div>
         </div>
     </div>
-
 </main>
 
-<!-- ========== FOOTER WITH THAKUR GAURAV SINGH BHADORIYA ========== -->
-<footer class="bg-gradient-to-r from-amber-900 to-amber-800 border-t-2 border-yellow-600 mt-16">
-    <div class="max-w-7xl mx-auto px-4 py-12">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 text-amber-100">
-            <!-- About Rajput -->
-            <div>
-                <h4 class="font-bold text-white text-lg mb-4 flex items-center rajput-title">
-                    <i class="fas fa-shield-alt mr-2"></i>
-                    राजपूत ठाकुर
-                </h4>
-                <p class="text-amber-200 text-sm">हमारा गौरवशाली इतिहास, हमारी वीर गाथाएं, हमारी संस्कृति - एक मंच पर।</p>
-                <div class="mt-4 text-2xl">
-                    <span>⚔️</span>
-                    <span class="mx-2">🛡️</span>
-                    <span>👑</span>
-                </div>
-            </div>
-            
-            <!-- Quick Links -->
-            <div>
-                <h4 class="font-bold text-white text-lg mb-4">महत्वपूर्ण कड़ियाँ</h4>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="#" class="text-amber-200 hover:text-white transition flex items-center"><i class="fas fa-history mr-2 w-5"></i>इतिहास</a></li>
-                    <li><a href="#" class="text-amber-200 hover:text-white transition flex items-center"><i class="fas fa-landmark mr-2 w-5"></i>किले</a></li>
-                    <li><a href="#" class="text-amber-200 hover:text-white transition flex items-center"><i class="fas fa-crown mr-2 w-5"></i>महाराजा</a></li>
-                </ul>
-            </div>
-            
-            <!-- Contact Info -->
-            <div>
-                <h4 class="font-bold text-white text-lg mb-4">संपर्क करें</h4>
-                <ul class="space-y-2 text-sm">
-                    <li class="flex items-center"><i class="fas fa-envelope mr-2 text-amber-400"></i>navneetgaurav1@gmail.com</li>
-                    <li class="flex items-center"><i class="fas fa-phone mr-2 text-amber-400"></i>+91 9328587567</li>
-                    <li class="flex items-center"><i class="fas fa-map-marker-alt mr-2 text-amber-400"></i>अहमदाबाद, गुजरात</li>
-                </ul>
-            </div>
-            
-            <!-- Created by - Thakur Gaurav Singh Bhadauriya -->
-            <div class="bg-amber-700/50 rounded-xl p-6 border border-yellow-500 text-center">
-                <div class="text-4xl mb-2">👑</div>
-                <h4 class="font-bold text-white text-lg mb-2 rajput-title">ठाकुर गौरव सिंह भदौरिया</h4>
-                <p class="text-amber-300 text-sm mb-3">Rajput Thakur | भदौरिया राजपूत</p>
-                <div class="flex justify-center space-x-4 text-2xl text-amber-300">
-                    
-                    <a href="https://www.instagram.com/thakur__209_/" target='_blank' class="hover:text-white transition"><i class="fab fa-instagram"></i></a>
-                    
-                </div>
-                <div class="mt-3 text-xs text-amber-400">
-                    <i class="fas fa-code mr-1"></i> डिजिटल विरासत का निर्माण
-                </div>
-            </div>
-        </div>
-        
-        <!-- Copyright Line with Thakur Gaurav Singh -->
-        <div class="border-t border-amber-700 mt-8 pt-8 text-center">
-            <p class="text-amber-300 text-sm">
-                © 
-2026 राजपूत ठाकुर गैलरी | गौरवशाली विरासत को समर्पित
-            </p>
-            <p class="text-amber-400 text-sm mt-2 flex items-center justify-center">
-                <i class="fas fa-crown mr-2"></i>
-                निर्माण: <span class="font-bold text-white mx-1">ठाकुर गौरव सिंह भदौरिया</span> (भदौरिया राजपूत)
-                <i class="fas fa-crown ml-2"></i>
-            </p>
-            <p class="text-xs text-amber-500 mt-2">
-                ⚔️ वीरता • शौर्य • बलिदान • गौरव ⚔️
-            </p>
-        </div>
-    </div>
-</footer>
-
-<!-- Toast Notification -->
-<div id="toast" class="fixed bottom-5 right-5 transform transition-all duration-500 translate-y-20 z-50">
-    <div class="bg-amber-800 rounded-xl shadow-2xl border-l-4 border-yellow-400 overflow-hidden">
-        <div class="flex items-center p-4">
-            <div class="flex-shrink-0">
-                <i id="toastIcon" class="fas fa-check-circle text-yellow-400 text-2xl"></i>
-            </div>
-            <div class="ml-3">
-                <p id="toastMessage" class="text-white font-medium"></p>
-                <p id="toastSubMessage" class="text-amber-200 text-sm"></p>
-            </div>
-            <button onclick="hideToast()" class="ml-4 text-amber-300 hover:text-white">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- Loading Overlay -->
-<div id="loadingOverlay" class="fixed inset-0 bg-amber-900/80 backdrop-blur-sm hidden items-center justify-center z-50">
-    <div class="bg-amber-100 rounded-2xl p-8 text-center border-4 border-yellow-500">
-        <div class="inline-block animate-spin rounded-full h-16 w-16 border-4 border-amber-700 border-t-yellow-500 mb-4"></div>
-        <h3 class="text-2xl font-bold text-amber-900 mb-2 rajput-title">प्रोसेसिंग...</h3>
-        <p class="text-amber-700">कृपया प्रतीक्षा करें, आपकी तस्वीर अपलोड हो रही है</p>
-        <div class="mt-4 text-3xl">⚔️</div>
-    </div>
-</div>
-
-<!-- JavaScript for Upload Functionality -->
 <script>
 // DOM Elements
+const fileInput = document.getElementById('fileInput');
 const dropZone = document.getElementById('dropZone');
-const imageInput = document.getElementById('imageInput');
-const uploadPrompt = document.getElementById('uploadPrompt');
-const imagePreview = document.getElementById('imagePreview');
-const previewImg = imagePreview.querySelector('img');
-const removeBtn = document.getElementById('removeImage');
-const uploadForm = document.getElementById('uploadForm');
-const uploadProgress = document.getElementById('uploadProgress');
-const progressBar = document.getElementById('progressBar');
-const progressPercent = document.getElementById('progressPercent');
-const fileName = document.getElementById('fileName');
-const fileSize = document.getElementById('fileSize');
-const toast = document.getElementById('toast');
-const loadingOverlay = document.getElementById('loadingOverlay');
-const submitBtn = document.getElementById('submitBtn');
-
 let selectedFile = null;
 
-// Click on dropzone to trigger file input
-dropZone.addEventListener('click', () => {
-    imageInput.click();
-});
-
-// Handle file selection
-imageInput.addEventListener('change', (e) => {
-    handleFile(e.target.files[0]);
-});
-
 // Drag and drop handlers
-['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-    dropZone.addEventListener(eventName, preventDefaults, false);
-});
+dropZone.addEventListener('click', () => fileInput.click());
 
-function preventDefaults(e) {
+dropZone.addEventListener('dragover', (e) => {
     e.preventDefault();
-    e.stopPropagation();
-}
-
-// Highlight drop zone on drag
-['dragenter', 'dragover'].forEach(eventName => {
-    dropZone.addEventListener(eventName, () => {
-        dropZone.classList.add('border-amber-600', 'bg-amber-100');
-    });
+    dropZone.classList.add('border-amber-600', 'bg-amber-50');
 });
 
-['dragleave', 'drop'].forEach(eventName => {
-    dropZone.addEventListener(eventName, () => {
-        dropZone.classList.remove('border-amber-600', 'bg-amber-100');
-    });
+dropZone.addEventListener('dragleave', () => {
+    dropZone.classList.remove('border-amber-600', 'bg-amber-50');
 });
 
-// Handle dropped file
 dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('border-amber-600', 'bg-amber-50');
     const file = e.dataTransfer.files[0];
-    handleFile(file);
+    handleFileSelect(file);
 });
 
-// File validation and preview
-function handleFile(file) {
+// File input change
+fileInput.addEventListener('change', (e) => {
+    handleFileSelect(e.target.files[0]);
+});
+
+function handleFileSelect(file) {
     if (!file) return;
-
-    // Check file type
-    const validTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
-    if (!validTypes.includes(file.type)) {
-        showNotification('कृपया एक वैध तस्वीर फ़ाइल चुनें!', 'error');
+    
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+        showStatus('कृपया केवल तस्वीर अपलोड करें', 'error');
         return;
     }
-
-    // Check file size (10MB max)
+    
+    // Validate file size (10MB max)
     if (file.size > 10 * 1024 * 1024) {
-        showNotification('तस्वीर का आकार 10MB से कम होना चाहिए!', 'error');
+        showStatus('फाइल का साइज़ 10MB से कम होना चाहिए', 'error');
         return;
     }
-
+    
     selectedFile = file;
-
+    document.getElementById('selectedFile').textContent = `📁 ${file.name}`;
+    document.getElementById('uploadBtn').disabled = false;
+    
     // Show preview
     const reader = new FileReader();
     reader.onload = (e) => {
-        previewImg.src = e.target.result;
-        document.getElementById('fileName').textContent = file.name;
-        document.getElementById('fileSize').textContent = formatFileSize(file.size);
-        uploadPrompt.classList.add('hidden');
-        imagePreview.classList.remove('hidden');
+        document.getElementById('previewImage').src = e.target.result;
+        document.getElementById('preview').classList.remove('hidden');
     };
     reader.readAsDataURL(file);
-
-    showNotification('तस्वीर सफलतापूर्वक चुनी गई!', 'success');
+    
+    showStatus('', '');
 }
 
-// Format file size
-function formatFileSize(bytes) {
-    if (bytes < 1024) return bytes + ' B';
-    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
-    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
-}
-
-// Remove selected image
-removeBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    selectedFile = null;
-    imageInput.value = '';
-    uploadPrompt.classList.remove('hidden');
-    imagePreview.classList.add('hidden');
-});
-
-// Handle form submission
-uploadForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-
-    if (!selectedFile) {
-        showNotification('कृपया एक तस्वीर चुनें!', 'error');
-        return;
-    }
-
+async function uploadToNeonDB() {
     const title = document.getElementById('imageTitle').value.trim();
+    const description = document.getElementById('imageDescription').value.trim();
+    
     if (!title) {
-        showNotification('कृपया तस्वीर का नाम लिखें!', 'error');
+        showStatus('कृपया तस्वीर का नाम लिखें', 'error');
         return;
     }
-
-    // Disable submit button
-    submitBtn.disabled = true;
-    submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
-
-    // Show progress bar
-    uploadProgress.classList.remove('hidden');
-    loadingOverlay.classList.remove('hidden');
-
-    // Simulate upload progress
-    let progress = 0;
-    const interval = setInterval(() => {
-        progress += 5;
-        if (progress <= 100) {
-            progressBar.style.width = progress + '%';
-            progressPercent.textContent = progress + '%';
-        }
-
-        if (progress >= 100) {
-            clearInterval(interval);
+    
+    if (!selectedFile) {
+        showStatus('कृपया तस्वीर चुनें', 'error');
+        return;
+    }
+    
+    // Show progress
+    document.getElementById('progress').classList.remove('hidden');
+    document.getElementById('uploadBtn').disabled = true;
+    
+    // Create form data
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('image', selectedFile);
+    
+    try {
+        // Convert FormData to base64 for Netlify Function
+        const buffer = await formDataToBase64(formData);
+        
+        const response = await fetch('/.netlify/functions/upload-image', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary' + Math.random().toString(36).substring(7)
+            },
+            body: buffer
+        });
+        
+        // Simulate progress
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 10;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressPercent').textContent = progress + '%';
             
-            // Save image after "upload" completes
+            if (progress >= 100) {
+                clearInterval(interval);
+            }
+        }, 200);
+        
+        const data = await response.json();
+        
+        if (data.success) {
             setTimeout(() => {
-                saveImage(title);
-            }, 500);
+                showStatus('✅ तस्वीर सफलतापूर्वक अपलोड हो गई!', 'success');
+                
+                // Reset form
+                document.getElementById('imageTitle').value = '';
+                document.getElementById('imageDescription').value = '';
+                document.getElementById('fileInput').value = '';
+                document.getElementById('selectedFile').textContent = 'कोई फाइल चुनी नहीं';
+                document.getElementById('preview').classList.add('hidden');
+                document.getElementById('progress').classList.add('hidden');
+                document.getElementById('progressBar').style.width = '0%';
+                document.getElementById('progressPercent').textContent = '0%';
+                selectedFile = null;
+                
+                // Redirect to gallery after 2 seconds
+                setTimeout(() => {
+                    window.location.href = 'index.html';
+                }, 2000);
+            }, 1000);
+        } else {
+            showStatus('❌ अपलोड नहीं हो सका: ' + data.error, 'error');
+            document.getElementById('progress').classList.add('hidden');
+            document.getElementById('uploadBtn').disabled = false;
         }
-    }, 100);
-});
-
-// Save image to localStorage
-function saveImage(title) {
-    const description = document.getElementById('imageDescription').value;
-    const category = document.getElementById('imageCategory').value;
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        // Create image object
-        const newImage = {
-            id: Date.now(),
-            title: title,
-            description: description,
-            category: category || 'other',
-            dataUrl: e.target.result,
-            fileName: selectedFile.name,
-            fileSize: selectedFile.size,
-            date: new Date().toISOString()
-        };
-
-        // Get existing images
-        let images = [];
-        const savedImages = localStorage.getItem('galleryImages');
-        if (savedImages) {
-            images = JSON.parse(savedImages);
-        }
-
-        // Add new image
-        images.push(newImage);
-
-        // Save to localStorage
-        localStorage.setItem('galleryImages', JSON.stringify(images));
-
-        // Hide loading overlay
-        loadingOverlay.classList.add('hidden');
-
-        // Show success message
-        showNotification('सफल!', 'आपकी तस्वीर अपलोड हो गई है', 'success');
-
-        // Redirect to home page
-        setTimeout(() => {
-            window.location.href = 'index.html';
-        }, 2000);
-    };
-    reader.readAsDataURL(selectedFile);
+        
+    } catch (error) {
+        console.error('Upload error:', error);
+        showStatus('❌ अपलोड नहीं हो सका: ' + error.message, 'error');
+        document.getElementById('progress').classList.add('hidden');
+        document.getElementById('uploadBtn').disabled = false;
+    }
 }
 
-// Show notification
-function showNotification(message, subMessage, type = 'success') {
-    const toastIcon = document.getElementById('toastIcon');
-    const toastMessage = document.getElementById('toastMessage');
-    const toastSubMessage = document.getElementById('toastSubMessage');
-    
-    // Set icon and color based on type
-    if (type === 'success') {
-        toastIcon.className = 'fas fa-check-circle text-yellow-400 text-2xl';
-        toast.querySelector('div').className = 'bg-amber-800 rounded-xl shadow-2xl border-l-4 border-yellow-400 overflow-hidden';
-    } else {
-        toastIcon.className = 'fas fa-exclamation-circle text-red-400 text-2xl';
-        toast.querySelector('div').className = 'bg-amber-800 rounded-xl shadow-2xl border-l-4 border-red-400 overflow-hidden';
-    }
-    
-    toastMessage.textContent = message;
-    toastSubMessage.textContent = subMessage || '';
-    
-    // Show toast
-    toast.style.transform = 'translateY(0)';
-
-    // Auto hide after 5 seconds
-    setTimeout(() => {
-        hideToast();
-    }, 5000);
+// Helper function to convert FormData to base64
+async function formDataToBase64(formData) {
+    return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.readAsDataURL(new Blob([formData]));
+    });
 }
 
-// Hide toast
-function hideToast() {
-    toast.style.transform = 'translateY(20px)';
+function showStatus(message, type) {
+    const statusDiv = document.getElementById('statusMessage');
+    if (!message) {
+        statusDiv.classList.add('hidden');
+        return;
+    }
+    
+    statusDiv.classList.remove('hidden', 'bg-green-100', 'bg-red-100', 'text-green-800', 'text-red-800');
+    statusDiv.classList.add(type === 'success' ? 'bg-green-100' : 'bg-red-100');
+    statusDiv.classList.add(type === 'success' ? 'text-green-800' : 'text-red-800');
+    statusDiv.textContent = message;
 }
-
-// Character counter for description
-document.getElementById('imageDescription')?.addEventListener('input', function() {
-    const maxLength = 500;
-    const currentLength = this.value.length;
-    const remaining = maxLength - currentLength;
-    
-    let counter = document.getElementById('charCounter');
-    if (!counter) {
-        counter = document.createElement('p');
-        counter.id = 'charCounter';
-        counter.className = 'text-amber-600 text-sm mt-2';
-        this.parentNode.appendChild(counter);
-    }
-    
-    counter.innerHTML = `<i class="fas fa-info-circle mr-1"></i>${remaining} अक्षर शेष`;
-    
-    if (remaining < 50) {
-        counter.classList.add('text-red-600');
-        counter.classList.remove('text-amber-600');
-    } else {
-        counter.classList.add('text-amber-600');
-        counter.classList.remove('text-red-600');
-    }
-});
-
-// Preview title in real-time
-document.getElementById('imageTitle')?.addEventListener('input', function() {
-    const preview = document.getElementById('titlePreview');
-    if (!preview) {
-        const p = document.createElement('p');
-        p.id = 'titlePreview';
-        p.className = 'text-amber-700 font-bold mt-2';
-        this.parentNode.appendChild(p);
-    }
-    document.getElementById('titlePreview').textContent = this.value ? 
-        `नाम: ${this.value}` : '';
-});
-
-// Keyboard shortcuts
-document.addEventListener('keydown', (e) => {
-    // Ctrl/Cmd + Enter to submit
-    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-        e.preventDefault();
-        uploadForm.dispatchEvent(new Event('submit'));
-    }
-    
-    // Escape to cancel
-    if (e.key === 'Escape') {
-        if (confirm('अपलोड रद्द करें? कोई भी बिना सहेजा डेटा खो जाएगा।')) {
-            window.location.href = 'index.html';
-        }
-    }
-});
-
-// Confirm before leaving if file selected
-window.addEventListener('beforeunload', (e) => {
-    if (selectedFile) {
-        e.preventDefault();
-        e.returnValue = '';
-    }
-});
 </script>
-
 </body>
 </html>
