@@ -1,38 +1,29 @@
+// netlify/functions/upload-image.js
 const { Client } = require('pg');
-const { parse } = require('multipart-parser');
+const Busboy = require('busboy');
 
 exports.handler = async (event) => {
-  // CORS Headers
   const headers = {
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    'Access-Control-Allow-Headers': 'Content-Type',
     'Access-Control-Allow-Methods': 'POST, OPTIONS',
   };
 
-  // Handle preflight OPTIONS request
   if (event.httpMethod === 'OPTIONS') {
-    return {
-      statusCode: 200,
-      headers,
-      body: '',
-    };
+    return { statusCode: 200, headers, body: '' };
   }
 
-  // Only allow POST
   if (event.httpMethod !== 'POST') {
     return {
       statusCode: 405,
       headers,
-      body: JSON.stringify({ error: 'Method not allowed' }),
+      body: JSON.stringify({ error: 'Method not allowed' })
     };
   }
 
-  // Neon DB connection
   const client = new Client({
     connectionString: process.env.NEON_DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false // Neon ke liye required
-    }
+    ssl: { rejectUnauthorized: false }
   });
 
   try {
@@ -52,58 +43,63 @@ exports.handler = async (event) => {
       );
     `);
 
-    // Parse multipart form data
-    const contentType = event.headers['content-type'] || '';
-    const boundary = contentType.split('boundary=')[1];
+    // Parse using busboy
+    const busboy = Busboy({ headers: event.headers });
     
-    if (!boundary) {
+    let formData = {
+      title: '',
+      description: '',
+      image: null
+    };
+
+    await new Promise((resolve, reject) => {
+      busboy.on('field', (fieldname, val) => {
+        formData[fieldname] = val;
+      });
+
+      busboy.on('file', (fieldname, file, info) => {
+        const { filename, mimeType } = info;
+        const chunks = [];
+        
+        file.on('data', (chunk) => chunks.push(chunk));
+        
+        file.on('end', () => {
+          formData.image = {
+            data: Buffer.concat(chunks),
+            filename: filename,
+            type: mimeType
+          };
+          resolve();
+        });
+      });
+
+      busboy.on('error', (err) => reject(err));
+      
+      // Write the body to busboy
+      busboy.write(event.body, event.isBase64Encoded ? 'base64' : 'binary');
+      busboy.end();
+    });
+
+    const { title, description, image } = formData;
+
+    if (!title || !image) {
       return {
         statusCode: 400,
         headers,
-        body: JSON.stringify({ error: 'Invalid content type' })
+        body: JSON.stringify({ error: 'Title and image required' })
       };
     }
 
-    // Parse multipart data
-    const parts = parse(Buffer.from(event.body, 'base64'), boundary);
-    
-    let title = '';
-    let description = '';
-    let imageFile = null;
+    // Convert to base64
+    const imageBase64 = image.data.toString('base64');
+    const dataUrl = `data:${image.type};base64,${imageBase64}`;
 
-    // Extract form fields
-    for (const part of parts) {
-      if (part.name === 'title') {
-        title = part.data.toString();
-      } else if (part.name === 'description') {
-        description = part.data.toString();
-      } else if (part.name === 'image') {
-        imageFile = {
-          data: part.data,
-          filename: part.filename,
-          type: part.type,
-        };
-      }
-    }
-
-    if (!title || !imageFile) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({ error: 'Title and image are required' })
-      };
-    }
-
-    // Convert image to base64 for storage
-    const imageBase64 = imageFile.data.toString('base64');
-    const dataUrl = `data:${imageFile.type};base64,${imageBase64}`;
-
-    // Insert into Neon DB
+    // Insert into DB
     const result = await client.query(
       `INSERT INTO images (title, description, image_data, file_name, file_size, mime_type) 
        VALUES ($1, $2, $3, $4, $5, $6) 
        RETURNING id, title, uploaded_at`,
-      [title, description, dataUrl, imageFile.filename, imageFile.data.length, imageFile.type]
+      [title, description || '', dataUrl, image.filename, image.data.length, image.type]
     );
 
     await client.end();
@@ -113,17 +109,17 @@ exports.handler = async (event) => {
       headers,
       body: JSON.stringify({
         success: true,
-        message: 'Image uploaded successfully',
+        message: 'Upload successful',
         image: result.rows[0]
-      }),
+      })
     };
 
   } catch (error) {
-    console.error('Upload error:', error);
+    console.error('Error:', error);
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: error.message }),
+      body: JSON.stringify({ error: error.message })
     };
   }
 };
