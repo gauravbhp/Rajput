@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Rajput Thakur Gallery with Neon DB",
   "dependencies": {
-    "pg": "^8.11.3",
     "busboy": "^1.6.0",
+    "multiparty": "^4.2.3",
+    "pg": "^8.11.3",
     "uuid": "^9.0.1"
   }
 }
